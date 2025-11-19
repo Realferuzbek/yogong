@@ -1,0 +1,11 @@
+﻿node_modules
+.next
+out
+.env*
+yarn.lock
+pnpm-lock.yaml
+
+# editor
+.idea
+.vscode
+.DS_Store
