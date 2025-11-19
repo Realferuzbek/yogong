@@ -7,12 +7,13 @@ export function RoadmapDashboard() {
     <section className="relative isolate min-h-screen overflow-hidden bg-gradient-to-b from-[#03010a] via-[#070317] to-[#010105] text-white">
       <Aurora />
 
-      <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 pb-20 pt-16 sm:px-10 lg:pt-20">
-        <DashboardHero />
+      <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 pb-20 pt-12 sm:px-10 lg:pt-16">
+        <TopBar />
+        <WelcomePanel />
 
         <div id="pillars" className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {ROADMAP_SECTIONS.map((section) => (
-            <FeatureCard key={section.id} section={section} />
+            <PillarCard key={section.id} section={section} />
           ))}
         </div>
       </div>
@@ -31,97 +32,110 @@ function Aurora() {
   );
 }
 
-function DashboardHero() {
+function TopBar() {
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-      <div className="relative overflow-hidden rounded-[40px] border border-white/10 bg-white/[0.05] p-8 shadow-card-soft">
-        <div className="pointer-events-none absolute inset-0 opacity-50">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.18),_transparent_55%)]" />
+    <header className="flex flex-wrap items-center justify-between gap-4 rounded-[999px] border border-white/10 bg-black/40 px-6 py-4 shadow-card-soft">
+      <div className="flex items-center gap-3">
+        <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 via-pink-500 to-amber-400 text-lg font-semibold text-white">
+          Y
+        </span>
+        <div>
+          <p className="text-xs uppercase tracking-[0.4em] text-white/60">YoGong</p>
+          <p className="text-base font-semibold text-white">Romantic Roadmap</p>
         </div>
+      </div>
 
-        <div className="relative z-10 flex flex-col gap-4">
-          <p className="text-[0.7rem] uppercase tracking-[0.5em] text-white/70">Welcome to YoGong</p>
-          <h1 className="text-3xl font-semibold leading-snug text-white sm:text-[2.35rem]">
-            Track every romantic pillar from one velvet dashboard.
-          </h1>
-          <p className="text-base text-white/75 sm:text-lg">
-            Five worlds (Today, Together, Space, Life, Profile) each hold dozens of rituals, prompts, and utilities. Wander in,
-            open a pillar, and peek at every sub-feature before we light them up.
-          </p>
+      <div className="flex items-center gap-4 text-sm text-white/70">
+        <p className="uppercase tracking-[0.3em]">Reviewer panel</p>
+        <div className="flex items-center -space-x-3">
+          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#05010c] bg-gradient-to-br from-indigo-500 to-purple-500 text-sm font-semibold">
+            US
+          </span>
+          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#05010c] bg-gradient-to-br from-rose-400 to-orange-300 text-sm font-semibold">
+            YG
+          </span>
+        </div>
+      </div>
+    </header>
+  );
+}
 
-          <div className="mt-6 grid gap-4 text-sm text-white/70 sm:grid-cols-2">
-            <HeroStat label="Main pillars" value="5" detail="Crafted for every moment" />
-            <HeroStat label="Sub features" value={`${ROADMAP_SECTIONS.reduce((sum, sec) => sum + sec.features.length, 0)}+`} detail="All in velvet beta" />
-            <HeroStat label="Status" value="Coming soon" detail="Invite-only previews" />
-            <HeroStat label="Mood" value="Romantic OS" detail="Built for soulmates" />
+function WelcomePanel() {
+  return (
+    <div className="relative overflow-hidden rounded-[50px] border border-white/10 bg-white/[0.07] px-8 py-10 shadow-card-soft">
+      <div className="pointer-events-none absolute inset-0 opacity-50">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(77,39,141,0.4),_transparent_55%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(255,138,170,0.2),_transparent_60%)]" />
+      </div>
+
+      <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex items-center gap-5">
+          <div className="h-16 w-16 rounded-[28px] border border-white/20 bg-gradient-to-br from-purple-500 to-rose-500 p-1 shadow-inner">
+            <div className="flex h-full w-full items-center justify-center rounded-[22px] bg-black/40 text-xl font-semibold">♥</div>
+          </div>
+          <div>
+            <p className="text-sm uppercase tracking-[0.4em] text-white/60">Welcome</p>
+            <h1 className="text-3xl font-semibold leading-tight text-white">Velvet Studio Crew</h1>
+            <p className="text-white/75">romance@yogong.app</p>
           </div>
         </div>
-      </div>
-
-      <div className="rounded-[36px] border border-white/10 bg-gradient-to-br from-[#ff8fba]/70 via-[#ffb170]/70 to-[#ffd86d]/60 p-6 text-[#2f0b13] shadow-accent-glow">
-        <p className="text-[0.65rem] uppercase tracking-[0.45em]">Velvet Access</p>
-        <h2 className="mt-3 text-2xl font-semibold">Roadmap Dashboard</h2>
-        <p className="mt-2 text-sm text-[#481929]">
-          Open any pillar to explore every planned touchpoint. Each tile links to its own lounge so you can plan future work.
-        </p>
-
-        <Link
-          href="#pillars"
-          className="mt-6 inline-flex h-12 w-full items-center justify-center rounded-full bg-[#2e0a1b] text-sm font-semibold uppercase tracking-[0.3em] text-white transition duration-200 hover:-translate-y-0.5"
-        >
-          Browse pillars
-        </Link>
-
-        <div className="mt-6 space-y-2 text-sm text-[#47152a]">
-          <p>• Beta drops weekly</p>
-          <p>• Deep build diary</p>
-          <p>• Couple-first energy</p>
+        <div className="flex flex-wrap gap-4 text-sm">
+          <WelcomeChip label="Drops" value="Weekly beta batches" />
+          <WelcomeChip label="Focus" value="Heartfelt rituals & utilities" />
+          <WelcomeChip label="Status" value="All lounges coming soon" />
         </div>
       </div>
     </div>
   );
 }
 
-function HeroStat({ label, value, detail }: { label: string; value: string; detail: string }) {
+function WelcomeChip({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-[22px] border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-xl">
-      <p className="text-[0.6rem] uppercase tracking-[0.4em] text-white/65">{label}</p>
-      <p className="mt-2 text-2xl font-semibold text-white">{value}</p>
-      <p className="text-xs text-white/70">{detail}</p>
+    <div className="rounded-[24px] border border-white/20 bg-white/5 px-4 py-3 text-left text-white/80">
+      <p className="text-[0.55rem] uppercase tracking-[0.4em] text-white/60">{label}</p>
+      <p className="mt-1 text-sm font-semibold text-white">{value}</p>
     </div>
   );
 }
 
-function FeatureCard({ section }: { section: RoadmapSection }) {
+function PillarCard({ section }: { section: RoadmapSection }) {
+  const initials = section.title
+    .split(/\s+/)
+    .map((word) => word[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
   return (
     <Link
       href={`/dashboard/${section.id}`}
-      className="group relative flex flex-col gap-5 overflow-hidden rounded-[34px] border border-white/10 bg-white/[0.04] p-6 text-left shadow-card-soft transition duration-300 hover:-translate-y-1 hover:border-white/30 hover:bg-white/[0.08]"
+      className="group relative flex flex-col gap-4 overflow-hidden rounded-[38px] border border-white/12 bg-gradient-to-b from-white/[0.07] via-white/[0.03] to-black/40 p-6 text-left shadow-card-soft transition duration-300 hover:-translate-y-1 hover:border-white/30"
     >
       <div className="pointer-events-none absolute inset-0 opacity-40">
         <div className={`absolute inset-0 ${section.gradient} bg-gradient-to-br blur-3xl`} />
+        <div className="absolute inset-0 rounded-[38px] border border-white/10" />
       </div>
 
       <div className="relative z-10 flex items-center gap-4">
-        <div className="flex h-12 w-12 items-center justify-center rounded-[18px] bg-white/10 text-lg font-semibold text-white">
-          {section.title
-            .split(" ")
-            .slice(0, 2)
-            .map((word) => word[0])
-            .join("")}
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/20 bg-black/50 text-base font-semibold text-white">
+          {initials}
         </div>
         <div>
-          <p className="text-[0.62rem] uppercase tracking-[0.45em] text-white/70">{section.subtitle}</p>
+          <p className="text-[0.6rem] uppercase tracking-[0.45em] text-white/70">{section.subtitle}</p>
           <h3 className="mt-1 text-[1.35rem] font-semibold text-white">{section.title}</h3>
         </div>
       </div>
 
       <p className="relative z-10 text-sm text-white/75">
-        {section.features.length} sub-features waiting to be unwrapped. Tap in to see every ritual and utility planned for this pillar.
+        {section.features.length} sub-features waiting to be unwrapped. Tap in to explore every ritual and touchpoint lovingly planned for
+        this pillar.
       </p>
 
-      <div className="relative z-10 flex items-center justify-between text-sm text-white/80">
-        <span className="rounded-full border border-white/15 px-3 py-1">View details</span>
+      <div className="relative z-10 flex items-center justify-between pt-2 text-sm text-white/85">
+        <span className="inline-flex items-center gap-2 rounded-full border border-white/20 px-3 py-1">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-300/70" />
+          Detail view
+        </span>
         <span className="accent-gradient inline-flex items-center rounded-full px-3 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.35em] text-[#2f0c18]">
           Coming soon
         </span>
