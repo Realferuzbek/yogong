@@ -108,3 +108,27 @@ export const ROADMAP_SECTIONS: RoadmapSection[] = [
     ]
   }
 ];
+
+export function getSectionById(id: string): RoadmapSection | undefined {
+  return ROADMAP_SECTIONS.find((section) => section.id === id);
+}
+
+export function toFeatureSlug(feature: string): string {
+  const normalized = feature
+    .normalize("NFKD")
+    .replace(/[\u2018\u2019\u201C\u201D]/g, "")
+    .replace(/&/g, "and");
+
+  return normalized
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+export function getFeatureFromSection(section: RoadmapSection, featureSlug: string): string | undefined {
+  return section.features.find((feature) => toFeatureSlug(feature) === featureSlug);
+}
+
+export function getFeatureRoute(sectionId: SectionId, feature: string): string {
+  return `/dashboard/${sectionId}/${toFeatureSlug(feature)}`;
+}
