@@ -21,17 +21,14 @@ export function RoadmapDashboard() {
     <section className="relative isolate min-h-screen overflow-hidden bg-gradient-to-b from-[#03010a] via-[#070317] to-[#010105] text-white">
       <Aurora />
 
-      <div className="relative mx-auto w-full max-w-[1240px] px-6 pb-32 pt-8 sm:px-8 lg:pt-[2.75rem]">
-        <div className="hidden flex-col md:flex">
+      <div className="relative mx-auto w-full max-w-6xl px-6 pb-32 pt-12 sm:px-10 lg:pt-16">
+        <div className="hidden flex-col gap-8 md:flex">
           <TopBar />
+          <WelcomePanel />
 
-          <div className="mt-6 md:mt-4">
-            <WelcomePanel />
-          </div>
-
-          <div id="pillars" className="mt-10 grid auto-rows-[1fr] items-stretch gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div id="pillars" className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {ROADMAP_SECTIONS.map((section) => (
-              <PillarCard key={section.id} section={section} layoutClassName={section.id === "profile" ? "lg:col-start-3" : undefined} />
+              <PillarCard key={section.id} section={section} />
             ))}
           </div>
         </div>
@@ -50,9 +47,6 @@ function Aurora() {
       <div className="absolute left-1/2 top-[-120px] h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,_rgba(255,122,176,0.4),_transparent_60%)] blur-[150px]" />
       <div className="absolute -left-20 top-1/3 h-[360px] w-[360px] rounded-full bg-[radial-gradient(circle,_rgba(105,84,255,0.36),_transparent_60%)] blur-[150px]" />
       <div className="absolute -right-16 bottom-10 h-[300px] w-[300px] rounded-full bg-[radial-gradient(circle,_rgba(255,190,140,0.3),_transparent_60%)] blur-[140px]" />
-      <div className="absolute inset-x-0 top-24 h-[900px]">
-        <div className="mx-auto h-full w-[1400px] rounded-[999px] bg-[radial-gradient(circle,_rgba(4,1,12,0.68),_rgba(3,0,10,0.52)_62%,_transparent_82%)] blur-[160px]" />
-      </div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(14,8,28,0.85),_rgba(3,1,8,0.95))]" />
     </div>
   );
@@ -60,24 +54,24 @@ function Aurora() {
 
 function TopBar() {
   return (
-    <header className="flex flex-wrap items-center justify-between gap-4 rounded-[56px] border border-white/15 bg-white/5 px-7 py-3 shadow-[0_18px_42px_rgba(5,0,18,0.42)] backdrop-blur-[18px] transition duration-300 hover:border-white/25 hover:bg-white/10">
-      <div className="flex items-center gap-[0.65rem]">
-        <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 via-pink-500 to-amber-400 text-lg font-semibold text-white shadow-[0_10px_25px_rgba(12,0,35,0.35)]">
+    <header className="flex flex-wrap items-center justify-between gap-4 rounded-[999px] border border-white/10 bg-black/40 px-6 py-4 shadow-card-soft">
+      <div className="flex items-center gap-3">
+        <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 via-pink-500 to-amber-400 text-lg font-semibold text-white">
           Y
         </span>
         <div>
-          <p className="text-[0.65rem] uppercase tracking-[0.42em] text-white/60">YoGong</p>
-          <p className="text-lg font-semibold tracking-tight text-white">Romantic Roadmap</p>
+          <p className="text-xs uppercase tracking-[0.4em] text-white/60">YoGong</p>
+          <p className="text-base font-semibold text-white">Romantic Roadmap</p>
         </div>
       </div>
 
-      <div className="flex items-center gap-3 text-sm text-white/70">
-        <p className="text-[0.6rem] font-semibold uppercase tracking-[0.35em] text-white/55">Reviewer panel</p>
+      <div className="flex items-center gap-4 text-sm text-white/70">
+        <p className="uppercase tracking-[0.3em]">Reviewer panel</p>
         <div className="flex items-center -space-x-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#05010c] bg-gradient-to-br from-indigo-500 to-purple-500 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(10,0,38,0.45)] transition hover:border-white/40 hover:brightness-110">
+          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#05010c] bg-gradient-to-br from-indigo-500 to-purple-500 text-sm font-semibold">
             US
           </span>
-          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#05010c] bg-gradient-to-br from-rose-400 to-orange-300 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(38,6,12,0.4)] transition hover:border-white/40 hover:brightness-110">
+          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#05010c] bg-gradient-to-br from-rose-400 to-orange-300 text-sm font-semibold">
             YG
           </span>
         </div>
@@ -88,25 +82,24 @@ function TopBar() {
 
 function WelcomePanel() {
   return (
-    <div className="relative overflow-hidden rounded-[44px] border border-white/12 bg-white/[0.05] px-8 py-8 shadow-[0_24px_48px_rgba(5,0,15,0.5)] backdrop-blur-[18px]">
-      <div className="pointer-events-none absolute inset-0 opacity-45">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(77,39,141,0.32),_transparent_55%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(255,138,170,0.15),_transparent_60%)]" />
+    <div className="relative overflow-hidden rounded-[50px] border border-white/10 bg-white/[0.07] px-8 py-10 shadow-card-soft">
+      <div className="pointer-events-none absolute inset-0 opacity-50">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(77,39,141,0.4),_transparent_55%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(255,138,170,0.2),_transparent_60%)]" />
       </div>
 
-      <div className="relative z-10 flex flex-col gap-6">
-        <div className="flex items-center gap-2">
-          <div className="flex h-14 w-14 items-center justify-center rounded-[24px] border border-white/25 bg-gradient-to-br from-purple-500 to-rose-500 p-[3px] shadow-[0_14px_34px_rgba(71,0,58,0.45)]">
-            <div className="flex h-full w-full items-center justify-center rounded-[20px] bg-black/45 text-lg font-semibold">♥</div>
+      <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex items-center gap-5">
+          <div className="h-16 w-16 rounded-[28px] border border-white/20 bg-gradient-to-br from-purple-500 to-rose-500 p-1 shadow-inner">
+            <div className="flex h-full w-full items-center justify-center rounded-[22px] bg-black/40 text-xl font-semibold">♥</div>
           </div>
-          <div className="space-y-1">
-            <p className="text-[0.65rem] uppercase tracking-[0.48em] text-white/55">Welcome</p>
-            <h1 className="text-[2.35rem] font-bold leading-[1.08] text-white">Velvet Studio Crew</h1>
-            <p className="mt-1.5 text-sm text-white/70">romance@yogong.app</p>
+          <div>
+            <p className="text-sm uppercase tracking-[0.4em] text-white/60">Welcome</p>
+            <h1 className="text-3xl font-semibold leading-tight text-white">Velvet Studio Crew</h1>
+            <p className="text-white/75">romance@yogong.app</p>
           </div>
         </div>
-
-        <div className="mt-4 flex w-full flex-wrap items-center gap-x-4 gap-y-3 lg:justify-end">
+        <div className="flex flex-wrap gap-4 text-sm">
           <WelcomeChip label="Drops" value="Weekly beta batches" />
           <WelcomeChip label="Focus" value="Heartfelt rituals & utilities" />
           <WelcomeChip label="Status" value="All lounges coming soon" />
@@ -118,19 +111,14 @@ function WelcomePanel() {
 
 function WelcomeChip({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex h-10 w-full min-w-[190px] flex-col justify-center rounded-full border border-[#c59dff45] bg-white/[0.08] px-5 text-left text-white transition-colors duration-300 hover:border-white/60 hover:bg-white/15 md:w-[220px]">
-      <p className="text-[0.55rem] font-semibold uppercase tracking-[0.5em] text-white/60">{label}</p>
-      <p className="text-sm font-medium text-white leading-tight">{value}</p>
+    <div className="rounded-[24px] border border-white/20 bg-white/5 px-4 py-3 text-left text-white/80">
+      <p className="text-[0.55rem] uppercase tracking-[0.4em] text-white/60">{label}</p>
+      <p className="mt-1 text-sm font-semibold text-white">{value}</p>
     </div>
   );
 }
 
-type PillarCardProps = {
-  section: RoadmapSection;
-  layoutClassName?: string;
-};
-
-function PillarCard({ section, layoutClassName }: PillarCardProps) {
+function PillarCard({ section }: { section: RoadmapSection }) {
   const initials = section.title
     .split(/\s+/)
     .map((word) => word[0])
@@ -141,33 +129,36 @@ function PillarCard({ section, layoutClassName }: PillarCardProps) {
   return (
     <Link
       href={`/dashboard/${section.id}`}
-      className={`group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-[24px] border border-white/12 bg-gradient-to-b from-white/[0.05] via-white/[0.02] to-black/50 p-6 text-left shadow-[0_20px_45px_rgba(3,0,12,0.38)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:border-white/30 hover:brightness-[1.05] hover:shadow-[0_34px_72px_rgba(10,5,32,0.6)] ${layoutClassName ?? ""}`}
+      className="group relative flex flex-col gap-4 overflow-hidden rounded-[38px] border border-white/12 bg-gradient-to-b from-white/[0.07] via-white/[0.03] to-black/40 p-6 text-left shadow-card-soft transition duration-300 hover:-translate-y-1 hover:border-white/30"
     >
-      <div className="pointer-events-none absolute inset-0 opacity-35">
-        <div className={`absolute inset-0 ${section.gradient} bg-gradient-to-br blur-[120px]`} />
-        <div className="absolute inset-0 rounded-[24px] border border-white/10" />
+      <div className="pointer-events-none absolute inset-0 opacity-40">
+        <div className={`absolute inset-0 ${section.gradient} bg-gradient-to-br blur-3xl`} />
+        <div className="absolute inset-0 rounded-[38px] border border-white/10" />
       </div>
 
-      <div className="relative z-10 flex flex-1 flex-col">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#c481ff45] bg-black/55 text-sm font-semibold text-white/95">
+      <div className="relative z-10 flex items-center gap-4">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/20 bg-black/50 text-base font-semibold text-white">
           {initials}
         </div>
-        <p className="mt-2 text-[0.55rem] font-semibold uppercase tracking-[0.55em] text-white/60">{section.subtitle}</p>
-        <h3 className="mt-1 text-[1.25rem] font-bold text-white/95">{section.title}</h3>
-        <p className="mt-2 max-w-[20rem] text-sm leading-relaxed text-white/80">
-          {section.features.length} sub-features waiting to be unwrapped. Tap in to explore every ritual and touchpoint lovingly planned for
-          this pillar.
-        </p>
-
-        <div className="mt-4 flex flex-wrap items-center gap-3 text-white/90">
-          <span className="inline-flex h-10 items-center gap-3 rounded-full border border-white/25 bg-white/[0.07] pl-4 pr-5 text-[0.95rem] font-semibold text-white transition duration-200 group-hover:border-white/45 group-hover:bg-white/[0.12] group-hover:shadow-[0_0_18px_rgba(118,255,202,0.25)]">
-            <span className="inline-flex h-2 w-2 rounded-full bg-emerald-300/80 shadow-[0_0_12px_rgba(17,255,180,0.8)]" />
-            Detail view
-          </span>
-          <span className="accent-gradient inline-flex h-10 min-w-[7.5rem] items-center justify-center rounded-full border border-white/15 px-5 text-[0.65rem] font-semibold uppercase tracking-[0.35em] text-[#2f0c18] transition duration-200 group-hover:brightness-110">
-            Coming soon
-          </span>
+        <div>
+          <p className="text-[0.6rem] uppercase tracking-[0.45em] text-white/70">{section.subtitle}</p>
+          <h3 className="mt-1 text-[1.35rem] font-semibold text-white">{section.title}</h3>
         </div>
+      </div>
+
+      <p className="relative z-10 text-sm text-white/75">
+        {section.features.length} sub-features waiting to be unwrapped. Tap in to explore every ritual and touchpoint lovingly planned for
+        this pillar.
+      </p>
+
+      <div className="relative z-10 flex items-center justify-between pt-2 text-sm text-white/85">
+        <span className="inline-flex items-center gap-2 rounded-full border border-white/20 px-3 py-1">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-300/70" />
+          Detail view
+        </span>
+        <span className="accent-gradient inline-flex items-center rounded-full px-3 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.35em] text-[#2f0c18]">
+          Coming soon
+        </span>
       </div>
     </Link>
   );
