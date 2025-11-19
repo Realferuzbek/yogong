@@ -1,22 +1,42 @@
-import Link from "next/link";
+'use client';
 
-import { ROADMAP_SECTIONS, type RoadmapSection } from "@/lib/roadmap";
+import Link from "next/link";
+import { useMemo, useState } from "react";
+
+import {
+  ROADMAP_SECTIONS,
+  getFeatureRoute,
+  type RoadmapSection,
+  type SectionId
+} from "@/lib/roadmap";
 
 export function RoadmapDashboard() {
+  const [activeSectionId, setActiveSectionId] = useState<SectionId>(ROADMAP_SECTIONS[0].id);
+  const activeSection = useMemo(
+    () => ROADMAP_SECTIONS.find((section) => section.id === activeSectionId) ?? ROADMAP_SECTIONS[0],
+    [activeSectionId]
+  );
+
   return (
     <section className="relative isolate min-h-screen overflow-hidden bg-gradient-to-b from-[#03010a] via-[#070317] to-[#010105] text-white">
       <Aurora />
 
-      <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 pb-20 pt-12 sm:px-10 lg:pt-16">
-        <TopBar />
-        <WelcomePanel />
+      <div className="relative mx-auto w-full max-w-6xl px-6 pb-32 pt-12 sm:px-10 lg:pt-16">
+        <div className="hidden flex-col gap-8 md:flex">
+          <TopBar />
+          <WelcomePanel />
 
-        <div id="pillars" className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-          {ROADMAP_SECTIONS.map((section) => (
-            <PillarCard key={section.id} section={section} />
-          ))}
+          <div id="pillars" className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            {ROADMAP_SECTIONS.map((section) => (
+              <PillarCard key={section.id} section={section} />
+            ))}
+          </div>
         </div>
+
+        <MobileExperience section={activeSection} />
       </div>
+
+      <MobileBottomTabs activeSectionId={activeSectionId} onSelectSection={setActiveSectionId} />
     </section>
   );
 }
@@ -142,4 +162,133 @@ function PillarCard({ section }: { section: RoadmapSection }) {
       </div>
     </Link>
   );
+}
+
+function MobileExperience({ section }: { section: RoadmapSection }) {
+  return (
+    <div className="flex flex-col gap-5 pb-10 pt-4 md:hidden">
+      <div className="rounded-[32px] border border-white/10 bg-white/[0.08] px-6 py-7 shadow-card-soft">
+        <p className="text-[0.6rem] uppercase tracking-[0.45em] text-white/70">Pillar</p>
+        <h2 className="mt-2 text-2xl font-semibold text-white">{section.title}</h2>
+        <p className="mt-2 text-sm text-white/75">{section.subtitle}</p>
+        <div className="mt-4 flex items-center justify-between text-sm text-white/80">
+          <span>{section.features.length} romantic sub-features</span>
+          <span className="accent-gradient inline-flex items-center rounded-full px-3 py-1 text-[0.55rem] font-semibold uppercase tracking-[0.35em] text-[#2f0c18]">
+            Coming soon
+          </span>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        {section.features.map((feature) => (
+          <Link
+            key={feature}
+            href={getFeatureRoute(section.id, feature)}
+            className="group flex flex-col gap-2 rounded-[28px] border border-white/10 bg-black/40 px-5 py-4 shadow-card-soft transition hover:border-white/30"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-base font-semibold text-white">{feature}</span>
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl border border-white/20 text-lg text-white/80 transition group-hover:border-white/40">
+                ↗
+              </span>
+            </div>
+            <p className="text-sm text-white/70">Dedicated lounge opens soon.</p>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+type MobileBottomTabsProps = {
+  activeSectionId: SectionId;
+  onSelectSection: (sectionId: SectionId) => void;
+};
+
+function MobileBottomTabs({ activeSectionId, onSelectSection }: MobileBottomTabsProps) {
+  return (
+    <nav className="md:hidden fixed bottom-4 left-1/2 z-40 flex w-[min(26rem,calc(100%-2rem))] -translate-x-1/2 items-center gap-2 rounded-[32px] border border-white/15 bg-black/75 px-2 py-2 shadow-card-soft backdrop-blur-3xl">
+      {ROADMAP_SECTIONS.map((section) => {
+        const isActive = section.id === activeSectionId;
+        const label = section.title.replace(/\(.*?\)/, "").split("/")[0].trim();
+        return (
+          <button
+            key={section.id}
+            type="button"
+            onClick={() => onSelectSection(section.id)}
+            className={`flex flex-1 flex-col items-center gap-1 rounded-[26px] px-2 py-2 transition ${
+              isActive ? "bg-white/15 text-white" : "text-white/60 hover:text-white"
+            }`}
+            aria-pressed={isActive}
+          >
+            <PillarIcon id={section.id} isActive={isActive} />
+            <span className="text-[0.6rem] font-semibold uppercase tracking-[0.3em]">{label}</span>
+          </button>
+        );
+      })}
+    </nav>
+  );
+}
+
+function PillarIcon({ id, isActive }: { id: SectionId; isActive: boolean }) {
+  const stroke = isActive ? "#ffffff" : "rgba(255,255,255,0.65)";
+  const secondary = isActive ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.45)";
+
+  switch (id) {
+    case "today":
+      return (
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth="1.5" strokeLinecap="round">
+          <circle cx="12" cy="12" r="4.5" />
+          <path d="M12 4V2" />
+          <path d="M12 22v-2" />
+          <path d="m4.93 4.93 1.4 1.4" />
+          <path d="m17.66 17.66 1.41 1.41" />
+          <path d="M4 12H2" />
+          <path d="M22 12h-2" />
+          <path d="m4.93 19.07 1.4-1.4" />
+          <path d="m17.66 6.34 1.41-1.41" />
+        </svg>
+      );
+    case "together":
+      return (
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth="1.5" strokeLinecap="round">
+          <path
+            d="M12 20s-5.5-3.35-5.5-7.5A3.5 3.5 0 0 1 10 9c1.66 0 2.5 1 2 3 .5-2 1.5-3 3.5-3a3.5 3.5 0 0 1 3.5 3.5C19 16.65 12 20 12 20Z"
+            fill={secondary}
+            fillOpacity={isActive ? 0.3 : 0.15}
+          />
+        </svg>
+      );
+    case "space":
+      return (
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth="1.5" strokeLinecap="round">
+          <path d="M12 2v3" />
+          <path d="M12 19v3" />
+          <path d="M4.22 4.22 6.34 6.34" />
+          <path d="m17.66 17.66 2.12 2.12" />
+          <path d="M2 12h3" />
+          <path d="M19 12h3" />
+          <circle cx="12" cy="12" r="4.5" />
+        </svg>
+      );
+    case "life":
+      return (
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth="1.5" strokeLinecap="round">
+          <rect x="3" y="4" width="18" height="17" rx="3" />
+          <path d="M16 2v4" />
+          <path d="M8 2v4" />
+          <path d="M3 10h18" />
+          <path d="m9 15 2 2 4-4" />
+        </svg>
+      );
+    case "profile":
+      return (
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth="1.5" strokeLinecap="round">
+          <circle cx="12" cy="8" r="4" />
+          <path d="M5.5 20.5a6.5 6.5 0 0 1 13 0" />
+        </svg>
+      );
+    default:
+      return null;
+  }
 }
