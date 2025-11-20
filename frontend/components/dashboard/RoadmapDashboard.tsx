@@ -14,7 +14,7 @@ const SECTION_COPY: Record<SectionId, { label: string; description: string; stat
   today: {
     label: "Daily rituals",
     description: "Tiny rituals and prompts to keep you in each other's orbit.",
-    status: "Preview",
+    status: "Coming soon",
     tag: "Laptop"
   },
   together: {
@@ -187,6 +187,13 @@ function PillarCard({ section }: { section: RoadmapSection }) {
   const meta = SECTION_COPY[section.id];
   const isPrimary = section.id === "today";
   const tone = CARD_TONES[section.id];
+  const displayTitle: Record<SectionId, string> = {
+    today: "Home",
+    together: "Together",
+    space: "Stories & Feelings",
+    life: "Life",
+    profile: "Profile"
+  };
 
   return (
     <Link
@@ -213,7 +220,7 @@ function PillarCard({ section }: { section: RoadmapSection }) {
             </div>
             <div className="space-y-1">
               <p className="text-[11px] uppercase tracking-[0.3em] text-white/70">{meta.label}</p>
-              <h3 className="text-[20px] font-semibold leading-tight text-white">{section.title}</h3>
+              <h3 className="text-[20px] font-semibold leading-tight text-white">{displayTitle[section.id]}</h3>
             </div>
           </div>
           <span
@@ -225,22 +232,6 @@ function PillarCard({ section }: { section: RoadmapSection }) {
 
         <p className="text-[14px] leading-6 text-white/85">{meta.description}</p>
 
-        <div className="flex items-center justify-between gap-3 pt-1 text-sm text-white/90">
-          <span
-            className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium transition duration-200 ${tone.pill} hover:border-white/55 hover:text-white`}
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-white/80 transition duration-200 group-hover:bg-white" />
-            Detail view
-          </span>
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center rounded-full border border-white/18 bg-white/[0.06] px-3 py-1 text-[11px] uppercase tracking-[0.28em] text-white/75">
-              {meta.tag}
-            </span>
-            <span className="inline-flex items-center rounded-full border border-white/16 bg-white/[0.05] px-3 py-1 text-[11px] uppercase tracking-[0.28em] text-white/70">
-              Romantic OS
-            </span>
-          </div>
-        </div>
       </div>
     </Link>
   );
