@@ -43,6 +43,52 @@ const SECTION_COPY: Record<SectionId, { label: string; description: string; stat
   }
 };
 
+type CardTone = {
+  surface: string;
+  halo: string;
+  badge: string;
+  icon: string;
+  pill: string;
+};
+
+const CARD_TONES: Record<SectionId, CardTone> = {
+  today: {
+    surface: "from-[#9b5cfb]/70 via-[#b94cff]/70 to-[#ff9f8a]/85",
+    halo: "bg-[radial-gradient(circle_at_25%_25%,rgba(255,255,255,0.16),transparent_42%),radial-gradient(circle_at_80%_70%,rgba(255,198,164,0.18),transparent_46%)]",
+    badge: "from-[#ffe6a3] via-[#ff9acb] to-[#b084ff]",
+    icon: "border-white/50 bg-white/15",
+    pill: "border-white/[0.35] bg-white/15"
+  },
+  together: {
+    surface: "from-[#14203e]/85 via-[#1d2a50]/75 to-[#142036]/85",
+    halo: "bg-[radial-gradient(circle_at_24%_22%,rgba(124,176,255,0.22),transparent_40%),radial-gradient(circle_at_88%_68%,rgba(255,140,186,0.14),transparent_46%)]",
+    badge: "from-[#ffd59f] via-[#ff9ac8] to-[#7ab8ff]",
+    icon: "border-white/25 bg-white/12",
+    pill: "border-white/20 bg-white/5"
+  },
+  space: {
+    surface: "from-[#1f183d]/85 via-[#2c1c4b]/75 to-[#3a1f3d]/80",
+    halo: "bg-[radial-gradient(circle_at_22%_22%,rgba(255,182,255,0.18),transparent_42%),radial-gradient(circle_at_78%_72%,rgba(255,148,186,0.16),transparent_48%)]",
+    badge: "from-[#ffd7ff] via-[#ff9ccf] to-[#b084ff]",
+    icon: "border-white/25 bg-white/12",
+    pill: "border-white/20 bg-white/5"
+  },
+  life: {
+    surface: "from-[#132524]/85 via-[#1c2d22]/78 to-[#2a261c]/82",
+    halo: "bg-[radial-gradient(circle_at_22%_20%,rgba(162,255,215,0.18),transparent_44%),radial-gradient(circle_at_82%_70%,rgba(255,182,142,0.18),transparent_46%)]",
+    badge: "from-[#ffe6a3] via-[#ffb38f] to-[#8be6c0]",
+    icon: "border-white/20 bg-white/10",
+    pill: "border-white/18 bg-white/5"
+  },
+  profile: {
+    surface: "from-[#181c31]/85 via-[#25293a]/78 to-[#2f2032]/82",
+    halo: "bg-[radial-gradient(circle_at_18%_22%,rgba(154,205,255,0.14),transparent_44%),radial-gradient(circle_at_80%_70%,rgba(255,176,152,0.17),transparent_46%)]",
+    badge: "from-[#ffd6a5] via-[#ff99c2] to-[#9eb7ff]",
+    icon: "border-white/22 bg-white/10",
+    pill: "border-white/18 bg-white/5"
+  }
+};
+
 export function RoadmapDashboard() {
   const [activeSectionId, setActiveSectionId] = useState<SectionId>(ROADMAP_SECTIONS[0].id);
   const activeSection = useMemo(
@@ -140,62 +186,60 @@ function TopBar() {
 function PillarCard({ section }: { section: RoadmapSection }) {
   const meta = SECTION_COPY[section.id];
   const isPrimary = section.id === "today";
+  const tone = CARD_TONES[section.id];
 
   return (
     <Link
       href={`/dashboard/${section.id}`}
-      className={`group relative flex h-full flex-col justify-between overflow-hidden rounded-[28px] border p-6 text-left shadow-[0_20px_50px_rgba(3,1,12,0.45)] transition duration-200 ease-out hover:-translate-y-1.5 hover:shadow-[0_28px_70px_rgba(255,124,182,0.15)] ${
-        isPrimary ? "border-white/20 bg-gradient-to-br from-[#7d3bf6]/70 via-[#b448ff]/70 to-[#ff9f8a]/80" : "border-white/12 bg-white/[0.03]"
+      className={`group relative flex h-full min-h-[230px] flex-col justify-between overflow-hidden rounded-[30px] border p-6 text-left shadow-[0_26px_80px_rgba(3,1,12,0.55)] backdrop-blur-3xl transition duration-200 ease-out hover:-translate-y-1.5 hover:shadow-[0_32px_90px_rgba(255,124,182,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 ${
+        isPrimary ? "border-white/30" : "border-white/15 bg-white/[0.02]"
       }`}
     >
-      <div className="pointer-events-none absolute inset-0 opacity-60 transition duration-200 group-hover:opacity-80">
-        {isPrimary ? (
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.12),transparent_45%),radial-gradient(circle_at_80%_70%,rgba(255,255,255,0.1),transparent_50%)]" />
-        ) : (
-          <div className={`absolute inset-0 ${section.gradient} bg-gradient-to-br opacity-10 blur-3xl`} />
-        )}
-        <div className="absolute inset-0 rounded-[28px] border border-white/8" />
+      <div className="pointer-events-none absolute inset-0 opacity-80 transition duration-300 group-hover:opacity-100">
+        <div className={`absolute inset-0 ${tone.surface} bg-gradient-to-br`} />
+        <div className={`absolute inset-0 ${tone.halo}`} />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.05),transparent_55%)] mix-blend-screen" />
+        <div className="absolute inset-0 rounded-[30px] border border-white/8" />
+        <div className="absolute inset-4 rounded-[26px] border border-white/5 opacity-60" />
       </div>
 
-      <div className="relative z-10 flex items-start justify-between gap-4">
-        <div className="flex items-start gap-3">
-          <div
-            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border text-base font-semibold text-white shadow-inner transition duration-200 group-hover:scale-105 ${
-              isPrimary ? "border-white/40 bg-white/15" : "border-white/20 bg-white/10"
-            }`}
+      <div className="relative z-10 flex flex-col gap-5 text-white">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-start gap-3">
+            <div
+              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border text-base font-semibold text-white shadow-inner transition duration-200 group-hover:scale-105 group-hover:shadow-[0_10px_30px_rgba(255,255,255,0.25)] ${tone.icon}`}
+            >
+              <PillarIcon id={section.id} isActive={true} />
+            </div>
+            <div className="space-y-1">
+              <p className="text-[11px] uppercase tracking-[0.3em] text-white/70">{meta.label}</p>
+              <h3 className="text-[20px] font-semibold leading-tight text-white">{section.title}</h3>
+            </div>
+          </div>
+          <span
+            className={`inline-flex items-center rounded-full bg-gradient-to-r ${tone.badge} px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#1e0c13] shadow-[0_14px_40px_rgba(255,139,170,0.35)]`}
           >
-            <PillarIcon id={section.id} isActive={true} />
-          </div>
-          <div className="space-y-1">
-            <p className="text-[11px] uppercase tracking-[0.3em] text-white/60">{meta.label}</p>
-            <h3 className="text-[19px] font-semibold text-white">{section.title}</h3>
-          </div>
+            {meta.status}
+          </span>
         </div>
-        <span className="inline-flex items-center rounded-full bg-gradient-to-r from-[#ffbd8a] via-[#ff89a5] to-[#f36aff] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#2f0c18] shadow-[0_12px_30px_rgba(255,139,170,0.35)]">
-          {meta.status}
-        </span>
-      </div>
 
-      <p className="relative z-10 mt-3 line-clamp-2 text-[14px] leading-6 text-white/80">{meta.description}</p>
+        <p className="text-[14px] leading-6 text-white/85">{meta.description}</p>
 
-      <div className="relative z-10 mt-6 flex items-center justify-between gap-3 pt-1 text-sm text-white/85">
-        <span
-          className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium transition duration-200 ${
-            isPrimary
-              ? "border-white/30 bg-white/15 text-white shadow-inner"
-              : "border-white/20 bg-white/5 text-white/90 hover:border-white/35 hover:text-white"
-          }`}
-        >
-          <span className="h-1.5 w-1.5 rounded-full bg-white/80 transition duration-200 group-hover:bg-white" />
-          Detail view
-        </span>
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center rounded-full border border-white/15 bg-white/[0.03] px-3 py-1 text-[11px] uppercase tracking-[0.28em] text-white/75">
-            {meta.tag}
+        <div className="flex items-center justify-between gap-3 pt-1 text-sm text-white/90">
+          <span
+            className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium transition duration-200 ${tone.pill} hover:border-white/55 hover:text-white`}
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-white/80 transition duration-200 group-hover:bg-white" />
+            Detail view
           </span>
-          <span className="inline-flex items-center rounded-full border border-white/12 bg-white/[0.03] px-3 py-1 text-[11px] uppercase tracking-[0.28em] text-white/65">
-            Romantic OS
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center rounded-full border border-white/18 bg-white/[0.06] px-3 py-1 text-[11px] uppercase tracking-[0.28em] text-white/75">
+              {meta.tag}
+            </span>
+            <span className="inline-flex items-center rounded-full border border-white/16 bg-white/[0.05] px-3 py-1 text-[11px] uppercase tracking-[0.28em] text-white/70">
+              Romantic OS
+            </span>
+          </div>
         </div>
       </div>
     </Link>
