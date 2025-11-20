@@ -12,36 +12,70 @@ import {
 
 const TOTAL_FEATURES = ROADMAP_SECTIONS.reduce((count, section) => count + section.features.length, 0);
 
+const SECTION_COPY: Record<SectionId, { label: string; description: string; status: string; tag: string }> = {
+  today: {
+    label: "Daily rituals",
+    description: "Tiny rituals and prompts to keep you in each other's orbit.",
+    status: "Preview",
+    tag: "Laptop"
+  },
+  together: {
+    label: "Live presence",
+    description: "Real-time rooms for calls, co-play, focus, and quick spark sessions.",
+    status: "Coming soon",
+    tag: "Laptop"
+  },
+  space: {
+    label: "Feelings & stories",
+    description: "A soft space for feelings, stories, and keepsakes you want to keep close.",
+    status: "Coming soon",
+    tag: "Romantic OS"
+  },
+  life: {
+    label: "Gentle logistics",
+    description: "Lists, plans, and reminders that keep the practical side of love gentle.",
+    status: "Coming soon",
+    tag: "Laptop"
+  },
+  profile: {
+    label: "Preferences",
+    description: "Tune preferences, safety, and boundaries to fit your love story.",
+    status: "Coming soon",
+    tag: "Settings"
+  }
+};
+
 export function RoadmapDashboard() {
   const [activeSectionId, setActiveSectionId] = useState<SectionId>(ROADMAP_SECTIONS[0].id);
   const activeSection = useMemo(
     () => ROADMAP_SECTIONS.find((section) => section.id === activeSectionId) ?? ROADMAP_SECTIONS[0],
     [activeSectionId]
   );
+  const sectionsWithSpacer: Array<RoadmapSection | "spacer"> = [
+    ...ROADMAP_SECTIONS.slice(0, 3),
+    "spacer",
+    ...ROADMAP_SECTIONS.slice(3)
+  ];
 
   return (
-    <section className="relative isolate min-h-screen overflow-hidden bg-gradient-to-b from-[#03010a] via-[#070317] to-[#010105] text-white">
+    <section className="relative isolate min-h-screen overflow-hidden bg-gradient-to-b from-[#04010d] via-[#070317] to-[#02010a] text-white">
       <Aurora />
+      <Noise />
 
-      <div className="relative mx-auto w-full max-w-7xl px-6 pb-32 pt-12 sm:px-10 lg:pt-16">
-        <div className="hidden flex-col gap-9 md:flex">
+      <div className="relative mx-auto w-full max-w-[1200px] px-6 pb-32 pt-10 sm:px-8 lg:pt-14">
+        <div className="hidden flex-col gap-10 md:flex">
           <TopBar />
-          <WelcomePanel totalFeatures={TOTAL_FEATURES} />
-
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <p className="text-xs uppercase tracking-[0.38em] text-white/60">Laptop preview</p>
-              <h2 className="display-type mt-1 text-2xl font-semibold text-white">The five pillars of your shared world</h2>
-            </div>
-            <span className="hidden rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/75 lg:inline-flex">
-              All lounges: Coming soon
-            </span>
-          </div>
+          <Hero totalFeatures={TOTAL_FEATURES} />
+          <SectionHeader />
 
           <div id="pillars" className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
-            {ROADMAP_SECTIONS.map((section) => (
-              <PillarCard key={section.id} section={section} />
-            ))}
+            {sectionsWithSpacer.map((section) =>
+              section === "spacer" ? (
+                <div key="spacer" className="hidden lg:block" aria-hidden />
+              ) : (
+                <PillarCard key={section.id} section={section} />
+              )
+            )}
           </div>
         </div>
 
@@ -64,121 +98,160 @@ function Aurora() {
   );
 }
 
+function Noise() {
+  return (
+    <div
+      className="pointer-events-none absolute inset-0 -z-10 opacity-[0.08] mix-blend-soft-light"
+      style={{
+        backgroundImage:
+          "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E\")"
+      }}
+    />
+  );
+}
+
 function TopBar() {
   return (
-    <header className="flex flex-wrap items-center justify-between gap-4 rounded-[999px] border border-white/10 bg-black/50 px-6 py-4 shadow-card-soft backdrop-blur-2xl">
+    <header className="sticky top-4 z-30 flex h-16 items-center justify-between gap-4 rounded-[18px] border border-white/10 bg-white/5 px-4 shadow-[0_12px_40px_rgba(3,1,12,0.45)] backdrop-blur-2xl sm:px-6">
       <div className="flex items-center gap-3">
-        <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 via-pink-500 to-amber-400 text-lg font-semibold text-white">Y</span>
-        <div>
-          <p className="text-xs uppercase tracking-[0.38em] text-white/60">YoGong Velvet OS</p>
-          <p className="text-base font-semibold text-white">Romantic Roadmap · Desktop focus</p>
+        <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 via-pink-500 to-amber-400 text-lg font-semibold text-white shadow-inner">
+          Y
+        </span>
+        <div className="leading-tight">
+          <p className="text-[11px] uppercase tracking-[0.32em] text-white/60">YoGong</p>
+          <p className="text-sm font-semibold text-white">Velvet OS · Laptop</p>
         </div>
       </div>
 
-      <div className="flex items-center gap-4 text-sm text-white/70">
-        <div className="hidden items-center rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/70 sm:inline-flex">
-          Laptop experience
+      <div className="flex items-center gap-4">
+        <div className="hidden overflow-hidden rounded-full border border-white/10 bg-white/10 p-1 text-[11px] font-medium uppercase tracking-[0.25em] text-white/75 sm:flex">
+          <span className="rounded-full bg-gradient-to-r from-white/15 to-white/5 px-3 py-1.5 text-white shadow-inner">Laptop experience</span>
+          <span className="px-3 py-1.5 text-white/70">Reviewer panel</span>
         </div>
-        <p className="uppercase tracking-[0.3em]">Reviewer panel</p>
         <div className="flex items-center -space-x-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#05010c] bg-gradient-to-br from-indigo-500 to-purple-500 text-sm font-semibold">US</span>
-          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#05010c] bg-gradient-to-br from-rose-400 to-orange-300 text-sm font-semibold">YG</span>
+          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#05010c] bg-gradient-to-br from-indigo-500 to-purple-500 text-sm font-semibold shadow-inner">
+            US
+          </span>
+          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#05010c] bg-gradient-to-br from-rose-400 to-orange-300 text-sm font-semibold shadow-inner">
+            YG
+          </span>
         </div>
       </div>
     </header>
   );
 }
 
-function WelcomePanel({ totalFeatures }: { totalFeatures: number }) {
+function Hero({ totalFeatures }: { totalFeatures: number }) {
   return (
-    <div className="relative overflow-hidden rounded-[50px] border border-white/10 bg-white/[0.07] px-9 py-11 shadow-card-soft">
-      <div className="pointer-events-none absolute inset-0 opacity-55">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(77,39,141,0.5),_transparent_55%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(255,138,170,0.25),_transparent_60%)]" />
+    <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-r from-[#1b1038] via-[#2d1752] to-[#5a2830] px-7 py-8 shadow-[0_24px_70px_rgba(3,1,12,0.45)] lg:px-10 lg:py-10">
+      <div className="pointer-events-none absolute inset-0 opacity-70">
+        <div className="absolute inset-y-0 left-0 w-2/3 bg-[radial-gradient(circle_at_18%_30%,rgba(144,99,255,0.36),transparent_50%)]" />
+        <div className="absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(circle_at_90%_40%,rgba(255,166,136,0.32),transparent_48%)]" />
       </div>
 
-      <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex items-center gap-5">
-          <div className="h-16 w-16 rounded-[28px] border border-white/20 bg-gradient-to-br from-purple-500 to-rose-500 p-1 shadow-inner">
-            <div className="flex h-full w-full items-center justify-center rounded-[22px] bg-black/40 text-xl font-semibold">♥</div>
-          </div>
-          <div>
-            <p className="text-sm uppercase tracking-[0.4em] text-white/60">Welcome</p>
-            <h1 className="display-type text-4xl font-semibold leading-tight text-white">Five lounges crafted for two</h1>
-            <p className="text-white/75">
-              A desktop-first peek at the pillars of your couple experience. Clear copy, intentional layout, ready for polish.
-            </p>
-          </div>
+      <div className="relative z-10 grid min-h-[230px] items-start gap-8 lg:grid-cols-[2fr_1fr]">
+        <div className="flex flex-col gap-3">
+          <p className="text-[11px] uppercase tracking-[0.4em] text-white/65">Welcome</p>
+          <h1 className="text-[34px] font-semibold leading-tight text-white lg:text-[36px]">Five lounges for the two of you</h1>
+          <p className="max-w-xl text-[15px] leading-relaxed text-white/80">
+            Pick a lounge and drop into your shared world—simple, warm, distraction-free.
+          </p>
+          <p className="text-xs text-white/60">Laptop view · YoGong Velvet OS</p>
         </div>
-        <div className="flex flex-wrap gap-4 text-sm">
-          <WelcomeChip label="Pillars" value="5 love pillars" />
-          <WelcomeChip label="Touchpoints" value={`${totalFeatures} sub-features in draft`} />
-          <WelcomeChip label="Tone" value="Gentle, upbeat, sincere" />
-          <WelcomeChip label="Status" value="Laptop-first preview" />
+        <div className="grid grid-cols-2 gap-3 self-center sm:max-w-lg">
+          <HeroStat label="Pillars" value="5 lounges" />
+          <HeroStat label="Touchpoints" value={`${totalFeatures} rituals in draft`} />
+          <HeroStat label="Tone" value="Gentle, upbeat, sincere" />
+          <HeroStat label="Status" value="Laptop-first preview" />
         </div>
       </div>
     </div>
   );
 }
 
-function WelcomeChip({ label, value }: { label: string; value: string }) {
+function HeroStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-[22px] border border-white/18 bg-gradient-to-br from-white/10 via-white/5 to-transparent px-4 py-3 text-left text-white/85 shadow-[0_14px_36px_rgba(5,3,12,0.45)] backdrop-blur-sm">
-      <p className="text-[0.55rem] uppercase tracking-[0.4em] text-white/60">{label}</p>
+    <div className="rounded-2xl border border-white/12 bg-white/5 px-4 py-3 text-left shadow-[0_18px_50px_rgba(3,1,12,0.35)] backdrop-blur-md">
+      <p className="text-[11px] uppercase tracking-[0.32em] text-white/60">{label}</p>
       <p className="mt-1 text-sm font-semibold text-white">{value}</p>
     </div>
   );
 }
 
+function SectionHeader() {
+  return (
+    <div className="flex flex-wrap items-end justify-between gap-4">
+      <div className="space-y-1">
+        <h2 className="text-[22px] font-semibold text-white">Your five lounges</h2>
+        <p className="text-sm text-white/65">Start where your relationship needs attention today.</p>
+      </div>
+      <span className="rounded-full border border-white/18 px-3 py-2 text-[11px] uppercase tracking-[0.28em] text-white/70">
+        All lounges: coming soon
+      </span>
+    </div>
+  );
+}
+
 function PillarCard({ section }: { section: RoadmapSection }) {
-  const initials = section.title
-    .split(/\s+/)
-    .map((word) => word[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
+  const meta = SECTION_COPY[section.id];
+  const isPrimary = section.id === "today";
 
   return (
     <Link
       href={`/dashboard/${section.id}`}
-      className="group relative flex h-full flex-col gap-5 overflow-hidden rounded-[34px] border border-white/12 bg-[#0c0718]/70 p-7 text-left shadow-card-soft transition duration-300 hover:-translate-y-1.5 hover:border-white/30 hover:shadow-[0_24px_70px_rgba(255,124,182,0.15)]"
+      className={`group relative flex h-full flex-col justify-between overflow-hidden rounded-[28px] border p-6 text-left shadow-[0_20px_50px_rgba(3,1,12,0.45)] transition duration-200 ease-out hover:-translate-y-1.5 hover:shadow-[0_28px_70px_rgba(255,124,182,0.15)] ${
+        isPrimary ? "border-white/20 bg-gradient-to-br from-[#7d3bf6]/70 via-[#b448ff]/70 to-[#ff9f8a]/80" : "border-white/12 bg-white/[0.03]"
+      }`}
     >
-      <div className="pointer-events-none absolute inset-0 opacity-50 transition duration-300 group-hover:opacity-70">
-        <div className={`absolute inset-0 ${section.gradient} bg-gradient-to-br blur-3xl`} />
-        <div className="absolute inset-0 rounded-[34px] border border-white/10" />
+      <div className="pointer-events-none absolute inset-0 opacity-60 transition duration-200 group-hover:opacity-80">
+        {isPrimary ? (
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.12),transparent_45%),radial-gradient(circle_at_80%_70%,rgba(255,255,255,0.1),transparent_50%)]" />
+        ) : (
+          <div className={`absolute inset-0 ${section.gradient} bg-gradient-to-br opacity-10 blur-3xl`} />
+        )}
+        <div className="absolute inset-0 rounded-[28px] border border-white/8" />
       </div>
 
       <div className="relative z-10 flex items-start justify-between gap-4">
-        <div className="flex items-start gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/20 bg-black/60 text-base font-semibold text-white shadow-inner">
-            {initials}
+        <div className="flex items-start gap-3">
+          <div
+            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border text-base font-semibold text-white shadow-inner transition duration-200 group-hover:scale-105 ${
+              isPrimary ? "border-white/40 bg-white/15" : "border-white/20 bg-white/10"
+            }`}
+          >
+            <PillarIcon id={section.id} isActive={true} />
           </div>
           <div className="space-y-1">
-            <p className="text-[0.58rem] uppercase tracking-[0.4em] text-white/65">{section.subtitle}</p>
-            <h3 className="text-[1.2rem] font-semibold text-white">{section.title}</h3>
+            <p className="text-[11px] uppercase tracking-[0.3em] text-white/60">{meta.label}</p>
+            <h3 className="text-[19px] font-semibold text-white">{section.title}</h3>
           </div>
         </div>
-        <div className="flex flex-col items-end gap-2 text-right">
-          <span className="accent-gradient inline-flex items-center rounded-full px-3 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.32em] text-[#2f0c18] shadow-accent-glow">
-            Coming soon
-          </span>
-          <span className="text-xs text-white/70">{section.features.length} rituals in draft</span>
-        </div>
+        <span className="inline-flex items-center rounded-full bg-gradient-to-r from-[#ffbd8a] via-[#ff89a5] to-[#f36aff] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#2f0c18] shadow-[0_12px_30px_rgba(255,139,170,0.35)]">
+          {meta.status}
+        </span>
       </div>
 
-      <p className="relative z-10 text-[0.98rem] leading-relaxed text-white/80">{section.description}</p>
+      <p className="relative z-10 mt-3 line-clamp-2 text-[14px] leading-6 text-white/80">{meta.description}</p>
 
-      <div className="relative z-10 flex flex-wrap items-center gap-3 pt-1 text-sm text-white/85">
-        <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-3 py-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-300/70" />
+      <div className="relative z-10 mt-6 flex items-center justify-between gap-3 pt-1 text-sm text-white/85">
+        <span
+          className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium transition duration-200 ${
+            isPrimary
+              ? "border-white/30 bg-white/15 text-white shadow-inner"
+              : "border-white/20 bg-white/5 text-white/90 hover:border-white/35 hover:text-white"
+          }`}
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-white/80 transition duration-200 group-hover:bg-white" />
           Detail view
         </span>
-        <span className="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[0.62rem] uppercase tracking-[0.32em] text-white/75">
-          Laptop
-        </span>
-        <span className="inline-flex items-center rounded-full border border-white/15 bg-black/50 px-3 py-1 text-[0.62rem] uppercase tracking-[0.32em] text-white/70">
-          Romantic OS
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center rounded-full border border-white/15 bg-white/[0.03] px-3 py-1 text-[11px] uppercase tracking-[0.28em] text-white/75">
+            {meta.tag}
+          </span>
+          <span className="inline-flex items-center rounded-full border border-white/12 bg-white/[0.03] px-3 py-1 text-[11px] uppercase tracking-[0.28em] text-white/65">
+            Romantic OS
+          </span>
+        </div>
       </div>
     </Link>
   );
