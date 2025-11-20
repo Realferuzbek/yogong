@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Clash+Display:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -15,6 +16,7 @@
 body {
   margin: 0;
   min-height: 100vh;
+  font-family: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
   background-color: var(--surface-deep);
   background-image:
     radial-gradient(circle at 20% -10%, rgba(175, 86, 250, 0.18), transparent 50%),
@@ -23,6 +25,14 @@ body {
     linear-gradient(180deg, #05030b 0%, #09051b 45%, #04020a 100%);
   color: #fdfbff;
   font-feature-settings: "ss01" on, "cv11" on;
+}
+
+h1,
+h2,
+h3,
+.display-type {
+  font-family: "Clash Display", "Manrope", "Segoe UI", system-ui, sans-serif;
+  letter-spacing: -0.01em;
 }
 
 .accent-gradient {

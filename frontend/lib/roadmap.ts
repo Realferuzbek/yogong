@@ -4,6 +4,7 @@ export type RoadmapSection = {
   id: SectionId;
   title: string;
   subtitle: string;
+  description: string;
   gradient: string;
   features: string[];
 };
@@ -13,6 +14,7 @@ export const ROADMAP_SECTIONS: RoadmapSection[] = [
     id: "today",
     title: "Today (Home)",
     subtitle: "Daily rhythms, rituals, and nudges",
+    description: "Anchor your day together with gentle prompts, tiny rituals, and micro-moments that keep you in each other’s orbit.",
     gradient: "from-rose-500/80 via-pink-500/80 to-orange-400/70",
     features: [
       "Daily Love Prompt",
@@ -28,6 +30,7 @@ export const ROADMAP_SECTIONS: RoadmapSection[] = [
     id: "together",
     title: "Together (Live)",
     subtitle: "Real-time co-presence experiences",
+    description: "Live rooms for co-presence—calls, co-play, focus, and quick spark moments when you can’t be side by side.",
     gradient: "from-blue-500/80 via-sky-500/80 to-cyan-400/70",
     features: [
       "Voice Call",
@@ -47,6 +50,7 @@ export const ROADMAP_SECTIONS: RoadmapSection[] = [
     id: "space",
     title: "Space (Stories & Feelings)",
     subtitle: "Deep stories, emotions, and keepsakes",
+    description: "A soft landing for feelings, stories, and keepsakes. Capture the texture of your relationship in one velvet space.",
     gradient: "from-violet-500/80 via-fuchsia-500/80 to-rose-400/70",
     features: [
       "Normal Chat",
@@ -70,6 +74,7 @@ export const ROADMAP_SECTIONS: RoadmapSection[] = [
     id: "life",
     title: "Life (Utilities)",
     subtitle: "Logistics made romantic and simple",
+    description: "Make the practical feel romantic—plans, lists, reminders, and nudges designed for two intertwined calendars.",
     gradient: "from-emerald-500/80 via-lime-500/80 to-amber-400/70",
     features: [
       "Couple Calendar",
@@ -91,6 +96,7 @@ export const ROADMAP_SECTIONS: RoadmapSection[] = [
     id: "profile",
     title: "Profile / Settings",
     subtitle: "Personalization, safety, and control",
+    description: "Shape the shared space to fit your bond—personalization, safety, and boundaries tuned to your love story.",
     gradient: "from-slate-500/80 via-gray-500/80 to-slate-300/70",
     features: [
       "Relationship Details",
