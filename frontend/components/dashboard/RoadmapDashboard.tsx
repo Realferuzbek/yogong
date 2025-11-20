@@ -10,8 +10,6 @@ import {
   type SectionId
 } from "@/lib/roadmap";
 
-const TOTAL_FEATURES = ROADMAP_SECTIONS.reduce((count, section) => count + section.features.length, 0);
-
 const SECTION_COPY: Record<SectionId, { label: string; description: string; status: string; tag: string }> = {
   today: {
     label: "Daily rituals",
@@ -65,8 +63,6 @@ export function RoadmapDashboard() {
       <div className="relative mx-auto w-full max-w-[1200px] px-6 pb-32 pt-10 sm:px-8 lg:pt-14">
         <div className="hidden flex-col gap-10 md:flex">
           <TopBar />
-          <Hero totalFeatures={TOTAL_FEATURES} />
-          <SectionHeader />
 
           <div id="pillars" className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
             {sectionsWithSpacer.map((section) =>
@@ -138,57 +134,6 @@ function TopBar() {
         </div>
       </div>
     </header>
-  );
-}
-
-function Hero({ totalFeatures }: { totalFeatures: number }) {
-  return (
-    <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-r from-[#1b1038] via-[#2d1752] to-[#5a2830] px-7 py-8 shadow-[0_24px_70px_rgba(3,1,12,0.45)] lg:px-10 lg:py-10">
-      <div className="pointer-events-none absolute inset-0 opacity-70">
-        <div className="absolute inset-y-0 left-0 w-2/3 bg-[radial-gradient(circle_at_18%_30%,rgba(144,99,255,0.36),transparent_50%)]" />
-        <div className="absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(circle_at_90%_40%,rgba(255,166,136,0.32),transparent_48%)]" />
-      </div>
-
-      <div className="relative z-10 grid min-h-[230px] items-start gap-8 lg:grid-cols-[2fr_1fr]">
-        <div className="flex flex-col gap-3">
-          <p className="text-[11px] uppercase tracking-[0.4em] text-white/65">Welcome</p>
-          <h1 className="text-[34px] font-semibold leading-tight text-white lg:text-[36px]">Five lounges for the two of you</h1>
-          <p className="max-w-xl text-[15px] leading-relaxed text-white/80">
-            Pick a lounge and drop into your shared world—simple, warm, distraction-free.
-          </p>
-          <p className="text-xs text-white/60">Laptop view · YoGong Velvet OS</p>
-        </div>
-        <div className="grid grid-cols-2 gap-3 self-center sm:max-w-lg">
-          <HeroStat label="Pillars" value="5 lounges" />
-          <HeroStat label="Touchpoints" value={`${totalFeatures} rituals in draft`} />
-          <HeroStat label="Tone" value="Gentle, upbeat, sincere" />
-          <HeroStat label="Status" value="Laptop-first preview" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function HeroStat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-2xl border border-white/12 bg-white/5 px-4 py-3 text-left shadow-[0_18px_50px_rgba(3,1,12,0.35)] backdrop-blur-md">
-      <p className="text-[11px] uppercase tracking-[0.32em] text-white/60">{label}</p>
-      <p className="mt-1 text-sm font-semibold text-white">{value}</p>
-    </div>
-  );
-}
-
-function SectionHeader() {
-  return (
-    <div className="flex flex-wrap items-end justify-between gap-4">
-      <div className="space-y-1">
-        <h2 className="text-[22px] font-semibold text-white">Your five lounges</h2>
-        <p className="text-sm text-white/65">Start where your relationship needs attention today.</p>
-      </div>
-      <span className="rounded-full border border-white/18 px-3 py-2 text-[11px] uppercase tracking-[0.28em] text-white/70">
-        All lounges: coming soon
-      </span>
-    </div>
   );
 }
 
