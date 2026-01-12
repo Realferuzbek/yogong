@@ -1,70 +1,95 @@
-# YoGong ✨
+# From Yobo to Gongjunim — Single-Page Web Letter
 
-A small, personal web experience — a single-page micro-site that combines staged messaging, subtle animation, and optional background audio to deliver one focused moment.
+A **static, single-file web experience** (no backend, no accounts) that plays an animated “caption-style” letter with:
+- floating heart animations,
+- typewriter text effects (welcome → main phrases → ending),
+- a background audio track with autoplay attempt + tap-to-play fallback,
+- and a final CTA button linking out to Instagram.
 
-**Live demo:** https://yobogongjunim.vercel.app/
-
----
-
-## What this is (and what it isn’t)
-
-**What it is:** a lightweight, static web project designed to communicate a feeling through interaction (timing, motion, and sound).  
-**What it isn’t:** a full product (no backend, no accounts, no analytics, no database).
-
-This repository is intentionally simple and transparent — built as a **personal prototype** and UI/interaction study.
+This repo is **pure HTML/CSS/JS** and can be hosted anywhere as a static page.
 
 ---
 
-## Preview
+## What it contains (code-backed)
 
-> Add screenshots here to make the first 10 seconds impressive:
-- `docs/screenshot-desktop.png` (TBD)
-- `docs/screenshot-mobile.png` (TBD)
+### Animated background
+- Generates **20** floating hearts on load with randomized:
+  - size,
+  - position,
+  - opacity,
+  - animation duration + delay.
 
----
+### Letter flow (typewriter + captions)
+- Runs automatically on `DOMContentLoaded`.
+- Sequence:
+  1) **Welcome** lines are typed (`WELCOME_LINES`)
+  2) Welcome panel fades out
+  3) **Main** phrases are shown *one at a time* with typewriter + fade (`MAIN_PHRASES`)
+  4) **Ending** lines are typed (`ENDING_LINES`)
+  5) Shows a CTA button labeled **“BACK TO YOBO”** linking to Instagram
 
-## Features ✅
+### Background audio
+- Audio element is `die_with_a_smile.mp3` (looped).
+- Tries autoplay first.
+- If blocked by the browser, shows a **“TAP TO PLAY”** chip and also captures the **first user tap** via an invisible gesture layer to start audio.
 
-- **Staged flow** (a guided sequence instead of one static page)
-- **Typewriter-style reveal** for message pacing
-- **Floating heart particles** as a lightweight ambient animation layer
-- **Background audio (optional)** — starts only after user interaction (browser autoplay-safe)
-- **Mobile-friendly interaction** (tap to continue)
-- **No build step** — static files, easy to host anywhere
-
----
-
-## Tech Stack 🧩
-
-- **HTML** (single page)
-- **CSS** (inline styling)
-- **Vanilla JavaScript** (inline logic)
-- **Static hosting** (Vercel)
-
----
-
-## How it works (high level)
-
-- `index.html` contains the full UI + styling + logic.
-- A simple **state flow** controls which stage is visible.
-- A phrase list drives the **typewriter animation** (character-by-character rendering).
-- Hearts are generated as small DOM elements and animated with CSS.
-- Audio is triggered only after a click/tap to comply with browser policies.
+### External resources
+- Uses **Google Fonts** (`fonts.googleapis.com`, `fonts.gstatic.com`).
+- CTA link points to: `https://www.instagram.com/realferuzbek`.
 
 ---
 
-## Project structure
+## Project files
 
-- `index.html` — UI + styles + logic
-- `die_with_a_smile.mp3` — audio file used by the page
-- `2_5260552987264182737.m4a` — additional audio asset (currently unused)
+- `index.html` — the full page (styles + script are inline)
+- `die_with_a_smile.mp3` — background audio referenced by `index.html`
+- `2_5260552987264182737.m4a` — additional audio file present in repo (not referenced by `index.html`)
+- `README.md` — documentation
 
 ---
 
 ## Run locally
 
-You can open `index.html` directly, or use a local static server:
+### Option A: open directly
+Open `index.html` in your browser.
 
+### Option B: run a local static server (recommended)
 ```bash
+# From the repo folder:
 python -m http.server 5173
-# then open http://localhost:5173
+```
+
+Then open:
+- `http://localhost:5173/`
+
+---
+
+## Customize (all changes are in `index.html`)
+
+### 1) Change the text
+Edit these arrays in the inline script:
+- `WELCOME_LINES`
+- `MAIN_PHRASES`
+- `ENDING_LINES`
+
+### 2) Change the audio
+Replace the audio file and update:
+```html
+<audio id="bgm" src="die_with_a_smile.mp3" ...></audio>
+```
+
+### 3) Change the CTA destination
+Update the link inside:
+- `#endingBtnWrap a` (currently points to Instagram)
+
+---
+
+## Tech stack
+- HTML + CSS + vanilla JavaScript
+- Google Fonts (external)
+- No backend, no database, no build step
+
+---
+
+## License
+No license file is included in this repo. Add one if you want reuse permissions to be explicit.
